@@ -13,12 +13,9 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -27,20 +24,15 @@ jobs:
         java-version: '17'
         distribution: 'zulu'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        # Artifact name
-        name: Build
-        # A file, directory or wildcard pattern that describes what to upload
-        path: target/*.jar
-        # The desired behavior if no files are found using the provided path.
+    - name: Build
+      run: mvn --batch-mode -DskipTests package
+    - name: Test
+      run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
     - name: Report
       uses: dorny/test-reporter@v1
       if: always()
       with:
-        name: unit-tests
+        name: Maven Tests
         path: target/surefire-reports/*.xml
         reporter: java-junit
+        fail-on-error: true
