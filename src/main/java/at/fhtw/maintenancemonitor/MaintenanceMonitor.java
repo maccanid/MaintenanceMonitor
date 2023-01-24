@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class MaintenanceMonitor {
-    private final String defaultStatus= "Everything works  as expected";
+    private final String defaultStatus= "Everything works as expected";
     private String status = defaultStatus;
 
     public String getStatus() {
